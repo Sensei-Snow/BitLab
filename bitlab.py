@@ -46,17 +46,82 @@ class MainWindow(QMainWindow):
         ])
 
         #------------------------------------------------------Events
+        self.widget.hide()
+        self.label.hide()
+
         self.input_mode.currentTextChanged.connect(self.update_combobox_output)
         self.input_mode.currentTextChanged.connect(self.text_changed)
+        self.input_mode.currentTextChanged.connect(self.reformat_binary)
+        self.input_mode.currentTextChanged.connect(self.reformat_hexadecimal)
         self.output_mode.currentTextChanged.connect(self.update_combobox_input)
         self.output_mode.currentTextChanged.connect(self.text_changed)
+        self.output_mode.currentTextChanged.connect(self.reformat_binary)
+        self.output_mode.currentTextChanged.connect(self.reformat_hexadecimal)
 
         self.paste_button.clicked.connect(self.paste_clipboard)
         self.copy_button.clicked.connect(self.copy_clipboard)
 
         self.input_text.textChanged.connect(self.text_changed)
+        self.input_text.textChanged.connect(self.reformat_binary)
+        self.input_text.textChanged.connect(self.reformat_hexadecimal)
+        self.output_text.textChanged.connect(self.verify_error)
 
     #------------------------------------------------------Functions
+    def verify_error(self):
+        output_text = self.output_text.toPlainText()
+        if "[ERROR]" in output_text:
+            self.widget.show()
+            self.label.show()
+        else:
+            self.widget.hide()
+            self.label.hide()
+
+    def format_binary(self, text: str) -> str:
+        text = text.replace(" ", "")
+        groups = [text[i:i + 8] for i in range(0, len(text), 8)]
+        return " ".join(groups)
+
+    def reformat_binary(self):
+        input_value = self.input_mode.currentText()
+
+        if input_value == "Binary":
+            text = self.input_text.toPlainText()
+            formatted = self.format_binary(text)
+
+            if text != formatted:
+                cursor = self.input_text.textCursor()
+                pos = cursor.position()
+                self.input_text.blockSignals(True)
+                self.input_text.setPlainText(formatted)
+                self.input_text.blockSignals(False)
+                spaces_before = pos // 8
+                new_pos = pos + spaces_before
+                cursor.setPosition(min(new_pos, len(formatted)))
+                self.input_text.setTextCursor(cursor)
+
+    def format_hexadecimal(self, text: str) -> str:
+        text = text.replace(" ", "")
+        groups = [text[i:i + 2] for i in range(0, len(text), 2)]
+        return " ".join(groups)
+
+    def reformat_hexadecimal(self):
+        input_value = self.input_mode.currentText()
+
+        if input_value == "Hexadecimal":
+            text = self.input_text.toPlainText()
+            formatted = self.format_hexadecimal(text)
+
+            if text != formatted:
+                cursor = self.input_text.textCursor()
+                pos = cursor.position()
+                self.input_text.blockSignals(True)
+                self.input_text.setPlainText(formatted)
+                self.input_text.blockSignals(False)
+                spaces_before = pos // 2
+                new_pos = pos + spaces_before
+                cursor.setPosition(min(new_pos, len(formatted)))
+                self.input_text.setTextCursor(cursor)
+
     def update_combobox_output(self):
         input_value = self.input_mode.currentText()
         current_output = self.output_mode.currentText()
@@ -121,7 +186,6 @@ class MainWindow(QMainWindow):
     def text_changed(self):
         input_value = self.input_mode.currentText()
         output_value = self.output_mode.currentText()
-        
         input_text = self.input_text.toPlainText()
         output_text = self.output_text.toPlainText()
 

@@ -75,7 +75,7 @@
 }</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="author_text">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -113,6 +113,37 @@
     <property name="text">
      <string>Copy</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>36</x>
+      <y>376</y>
+      <width>680</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #2d2d2d</string>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>100</y>
+       <width>261</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>❌ Incorrect Input ❌</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

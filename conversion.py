@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------------Verify
 def verify_decimal(integer):
     str_value = str(integer)
-    if all(char in "0123456789" for char in str_value) and str_value != '':
+    if all(char in "0123456789" + ' ' for char in str_value) and str_value != '':
         return True
 
 def verify_binary(string):
@@ -92,9 +92,20 @@ def binary_to_decimal(string):
 
 def binary_to_hexadecimal(string):
     if verify_binary(string):
-        binary_clean = clean_binary(string)
-        decimal = binary_to_decimal(binary_clean)
-        return decimal_to_hexadecimal(decimal)
+        # Découper la chaîne sur les espaces pour traiter chaque bloc séparément
+        binary_list = string.split()
+        hex_list = []
+        for binary in binary_list:
+            binary_clean = clean_binary(binary)
+            decimal = binary_to_decimal(binary_clean)
+            # Si la conversion échoue, retourner l'erreur immédiatement
+            if isinstance(decimal, str) and decimal.startswith("[ERROR]"):
+                return decimal
+            hex_value = decimal_to_hexadecimal(decimal)
+            if isinstance(hex_value, str) and hex_value.startswith("[ERROR]"):
+                return hex_value
+            hex_list.append(hex_value)
+        return ' '.join(hex_list)
     else:
         return "[ERROR] -- Invalid binary value"
 
