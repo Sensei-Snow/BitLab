@@ -1,6 +1,13 @@
-# BitLab
+<div align="center">
+    <img src="assets/logo.png" alt="BitLab Logo" width="400"/>
+</div>
 
 <h3>Here is the code for BitLab. With this application, you can convert between strings, decimal values, binary values and hexadecimal values.</h3>
+<br>
+
+<div align="center">
+    <img src="assets/interface.png" alt="BitLab Screenshot" width="700"/>
+</div>
 <br>
 
 <hr style="height:2px; background-color:gray; border:none;">
